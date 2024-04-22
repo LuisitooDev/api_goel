@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 // Endpoint para insertar datos en MongoDB
-app.post('/sensor-data', async (req, res) => {
+app.post('/insert-sensor-data', async (req, res) => {
     const db = await connectToMongoDB();
     const sensorData = req.body;
     const result = await db.collection('sensorData').insertOne(sensorData);
