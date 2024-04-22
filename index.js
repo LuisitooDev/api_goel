@@ -1,5 +1,6 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
+const cors = require('cors'); // Importa el paquete cors
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -7,14 +8,7 @@ const PORT = process.env.PORT || 3000;
 const mongoURI = 'mongodb+srv://luisitodev:dp8OiCTU9AfSi2bx@cluster0.9jkmrph.mongodb.net/'; // Reemplaza con tus propias credenciales y URL de conexión
 
 app.use(express.json());
-
-// Configuración de CORS
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Permite solicitudes desde cualquier origen
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Métodos permitidos
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Cabeceras permitidas
-    next();
-});
+app.use(cors()); // Utiliza el middleware de CORS
 
 async function connectToMongoDB() {
     try {
