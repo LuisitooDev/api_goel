@@ -8,6 +8,14 @@ const mongoURI = 'mongodb+srv://luisitodev:dp8OiCTU9AfSi2bx@cluster0.9jkmrph.mon
 
 app.use(express.json());
 
+// Configuración de CORS
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Permite solicitudes desde cualquier origen
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Métodos permitidos
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Cabeceras permitidas
+    next();
+});
+
 async function connectToMongoDB() {
     try {
         const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -23,15 +31,15 @@ app.get('/', (req, res) => {
     res.send('API funcionando');
 });
 
-// Ejemplo de endpoint para insertar datos en MongoDB
+// Endpoint para insertar datos en MongoDB
 app.post('/sensor-data', async (req, res) => {
     const db = await connectToMongoDB();
-    const sensorData = req.body; // Suponiendo que el cuerpo de la solicitud contiene datos del sensor en formato JSON
+    const sensorData = req.body;
     const result = await db.collection('sensorData').insertOne(sensorData);
     res.status(201).json({ message: 'Datos del sensor insertados correctamente', insertedId: result.insertedId });
 });
 
-// Ejemplo de endpoint para obtener todos los datos del sensor
+// Endpoint para obtener todos los datos del sensor
 app.get('/sensor-data', async (req, res) => {
     const db = await connectToMongoDB();
     const sensorData = await db.collection('sensorData').find().toArray();
